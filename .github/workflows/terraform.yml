@@ -29,7 +29,7 @@ jobs:
           aws-region: "us-east-1"
       - name: "Terraform Init"
         run: 
-          terraform main.tf
+          terraform ./main.tf
           terraform init
 
       - name: "Terraform Format Check"
@@ -39,10 +39,10 @@ jobs:
 
       - name: "Terraform Plan"
         run: 
-          terraform main.tf
+          terraform ./main.tf
           terraform plan -input=false
 
       - name: "Terraform Apply"
-        run: 
-          terraform main.tf
+        run:
+            terraform ./main.tf
           terraform apply -auto-approve -input=false
