@@ -1,8 +1,8 @@
-name: 'terraform-workflow'
+name: "terraform-workflow"
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
 
 permissions:
@@ -10,38 +10,39 @@ permissions:
 
 jobs:
   terraform:
-    name: 'terraform-job'
+    name: "terraform-job"
     runs-on: ubuntu-latest
     environment: production
     steps:
-    - name: 'Checkout code'
-      uses: actions/checkout@v3
+      - name: "Checkout code"
+        uses: actions/checkout@v3
 
-    - name: 'Setup Terraform'
-      uses: hashicorp/setup-terraform@v1
+      - name: "Setup Terraform"
+        uses: hashicorp/setup-terraform@v1
 
-    - name: 'Configure AWS Credentials'
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: 'us-east-1'
-    - name: 'Terraform Init'
-      run: |
-        terraform main.tf
-        terraform init
+      - name: "Configure AWS Credentials"
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: "us-east-1"
+      - name: "Terraform Init"
+        run: |
+          terraform main.tf
+          terraform init
 
-    - name: 'Terraform Format Check'
-      run: |
-        terraform main.tf
-        terraform fmt -check
+      - name: "Terraform Format Check"
+        run: |
+          terraform main.tf
+          terraform fmt -check
 
-    - name: 'Terraform Plan'
-      run: |
-        terraform main.tf
-        terraform plan -input=false
+      - name: "Terraform Plan"
+        run: |
+          terraform main.tf
+          terraform plan -input=false
 
-    - name: 'Terraform Apply'
-      run: |
-        terraform main.tf
-        terraform apply -auto-approve -input=false
+      - name: "Terraform Apply"
+        run: |
+          terraform main.tf
+          terraform apply -auto-approve -input=false
